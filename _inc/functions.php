@@ -1,4 +1,7 @@
+
 <?php
+
+require('config.php');
 function add_stylesheet()
 {
     echo '<link rel="stylesheet" href="../assets/css/style.css">';
@@ -116,3 +119,26 @@ function generate_qna(array $qna)
         echo ('</div>');
     }
 }
+
+function redirect_homepage()
+{
+    header("Location: templates/home.php");
+    die("Neporadilo sa nájsť Domovskú stránku");
+}
+
+function db_connection()
+{
+    try {
+        //$pdo = new PDO('mysql:host=localhost;dbname=vaša_databáza', 'vaše_používateľské_meno', 'vaše_heslo');
+        $connection = new PDO(
+            "mysql:host=" . DATABASE['HOST'] . ";dbname=" . DATABASE['DBNAME'] . ";charset=utf8",
+            DATABASE['USER_NAME'],
+            DATABASE['PASSWORD']
+        );
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+        return $connection;
+    } catch (PDOException $e) {
+        die("Chyba pripojenia k databáze: " . $e->getMessage());
+    }
+}
+?>
