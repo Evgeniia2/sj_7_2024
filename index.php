@@ -1,4 +1,5 @@
 <?php
-    require('_inc/functions.php');
-    redirect_homepage();
+    require_once('_inc/functions.php');
+    $page = new Page();
+    $page->redirect_homepage();
 ?>

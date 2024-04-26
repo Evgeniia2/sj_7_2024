@@ -5,19 +5,20 @@
         private $db;
 
         public function __construct(){
-            $this->db = $this->db_connection();        
+            $this->db = $this->db_connect();        
         }
 
-        public function insert(){
-
-            if($this->db){
-                //echo 'Máme spojenie s databázou';
+        function insert(){
+                if($this->db){
+                echo 'máme spojenie';
+                }
                 if(isset($_POST['contact_submitted'])){
-                    //echo 'Post bol vykonaný';
+                    echo 'Form bol odoslany';
+                    
                     $data = array('contact_name'=>$_POST['name'],
-                      'contact_email'=>$_POST['email'],
-                      'contact_message'=>$_POST['message'],
-                      'contact_acceptance'=>$_POST['acceptance'],
+                    'contact_email'=>$_POST['email'],
+                    //'contact_message'=>$_POST['message'],
+                    'contact_acceptance'=>$_POST['acceptance'],
                     );
 
                     try{
@@ -32,15 +33,36 @@
                         echo $e->getMessage();
                     }
                 }else{
-                    //echo 'Post nebol vykonaný';
+                    echo 'Post nebol vykonaný';
                 }
-              }
-              else{
-                //echo 'Nemáme spojenie s databázou';
+
+
               }
 
+              public function select(){
+          try{
+            $sql = "SELECT * FROM contact";
+            $query =  $this->db->query($sql);
+            $contacts = $query->fetchAll();
+            return $contacts;
+          }catch(PDOException $e){
+            echo($e->getMessage());
+          }
+        }
+
+        public function delete(){
+
+          try {
+            $data = array(
+                'contact_id' => $_POST['delete_contact']
+            );
+            $query = "DELETE FROM contact WHERE id = :contact_id";
+            $query_run = $this->db->prepare($query);
+            $query_run->execute($data);
+          }catch (PDOException $e) {
+            echo $e->getMessage();
+          }
         }
 
     }
-
 ?>

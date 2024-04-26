@@ -6,17 +6,15 @@
 
         public function __construct()
         {
-            $this->db = $this->db_connection();
+            $this->db = $this->connect();
         }
 
         public function select(){
 
             try{
-                $sql = "SELECT * FROM qna";
-                $query =  $this->db->query($sql);
+                $query =  $this->db->query("SELECT * FROM qna");
                 $qna = $query->fetchAll();
                 return $qna;
-
             }catch(PDOException $e){
                 echo $e->getMessage();
             }
